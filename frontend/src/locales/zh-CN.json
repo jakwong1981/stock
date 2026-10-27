@@ -1,0 +1,178 @@
+{
+  "app": {
+    "name": "CyberStock Pulse",
+    "tagline": "实时多市场投资终端",
+    "simulated": "模拟数据",
+    "skipToContent": "跳至主要内容",
+    "delayedYahoo": "行情来自 Yahoo Finance，可能有延迟（港股约 15 分钟）",
+    "tapToSkip": "轻触跳过"
+  },
+  "lang": {
+    "zh-HK": "繁體中文（香港）",
+    "zh-TW": "繁體中文（台灣）",
+    "zh-CN": "简体中文",
+    "en-US": "English"
+  },
+  "nav": {
+    "main": "主导航",
+    "dashboard": "首页",
+    "news": "资讯",
+    "portfolio": "持仓",
+    "ai": "AI 分析师",
+    "settings": "设置"
+  },
+  "common": {
+    "loading": "加载中…",
+    "retry": "重试",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "close": "关闭",
+    "search": "搜索",
+    "searchPlaceholder": "搜索股票代码或公司",
+    "noResults": "无结果",
+    "signIn": "登录",
+    "signOut": "退出登录",
+    "signUp": "注册账号",
+    "viewAll": "查看全部",
+    "back": "返回"
+  },
+  "market": {
+    "price": "最新价",
+    "change": "涨跌额",
+    "changePercent": "涨跌幅",
+    "volume": "成交量",
+    "open": "开盘",
+    "high": "最高",
+    "low": "最低",
+    "prevClose": "昨收",
+    "watchlist": "自选股",
+    "hotStocks": "热门股票",
+    "addToWatchlist": "加入自选",
+    "removeFromWatchlist": "移出自选",
+    "emptyWatchlist": "自选股列表为空，请搜索股票并添加。",
+    "marketStatus": "市场状态",
+    "session": {
+      "PRE_MARKET": "盘前",
+      "REGULAR": "交易中",
+      "LUNCH_BREAK": "午间休市",
+      "POST_MARKET": "盘后",
+      "CLOSED": "已收盘"
+    }
+  },
+  "stream": {
+    "connected": "实时",
+    "connecting": "连接中",
+    "reconnecting": "重新连接中",
+    "offline": "离线"
+  },
+  "chart": {
+    "title": "股价走势",
+    "interval": "周期"
+  },
+  "news": {
+    "title": "实时财经快讯",
+    "breaking": "快讯",
+    "empty": "暂无资讯。",
+    "readMore": "阅读原文",
+    "aiSummary": "AI 摘要",
+    "sentiment": {
+      "BULLISH": "利好",
+      "BEARISH": "利空",
+      "NEUTRAL": "中性",
+      "UNANALYZED": "未分析"
+    }
+  },
+  "portfolio": {
+    "title": "持仓",
+    "positions": "持仓明细",
+    "transactions": "交易记录",
+    "addTransaction": "添加交易",
+    "symbol": "股票代码",
+    "side": "类型",
+    "quantity": "数量",
+    "price": "价格",
+    "fee": "手续费",
+    "executedAt": "日期",
+    "avgCost": "持仓均价",
+    "costBasis": "持仓成本",
+    "marketValue": "市值",
+    "unrealized": "浮动盈亏",
+    "realized": "已实现盈亏",
+    "dividends": "分红",
+    "summary": "汇总（{currency}）",
+    "empty": "暂无交易记录。",
+    "signInRequired": "登录后即可在多台设备同步你的持仓。",
+    "confirmDelete": "确定删除这笔交易？",
+    "sides": {
+      "BUY": "买入",
+      "SELL": "卖出",
+      "DIVIDEND": "分红"
+    }
+  },
+  "ai": {
+    "title": "AI 分析师",
+    "intro": "查询行情、走势、资讯或你的持仓。由 DeepSeek 提供支持。",
+    "placeholder": "例如：英伟达本周走势如何？",
+    "send": "发送",
+    "stop": "停止",
+    "thinking": "分析中…",
+    "usingTool": "正在查询：{tool}",
+    "signInRequired": "请先登录以使用 AI 分析师。",
+    "disclaimer": "AI 内容仅供参考，不构成任何投资建议。",
+    "tools": {
+      "get_quote": "实时行情",
+      "get_candles": "历史价格",
+      "get_instrument": "公司资料",
+      "get_portfolio": "你的持仓",
+      "search_news": "最新资讯"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "colorScheme": "涨跌颜色",
+    "colorSchemes": {
+      "GREEN_UP": "绿涨红跌",
+      "RED_UP": "红涨绿跌"
+    },
+    "highContrast": "户外高对比模式",
+    "highContrastHint": "去除发光与透明效果，便于在强光下阅读。",
+    "haptics": "震动反馈",
+    "account": "账号",
+    "about": "关于",
+    "version": "版本 {version}"
+  },
+  "auth": {
+    "email": "邮箱",
+    "password": "密码",
+    "passwordHint": "至少 8 个字符",
+    "displayName": "昵称",
+    "loginTitle": "登录",
+    "registerTitle": "注册账号",
+    "noAccount": "还没有账号？",
+    "haveAccount": "已有账号？"
+  },
+  "errors": {
+    "INVALID_CREDENTIALS": "邮箱或密码错误。",
+    "EMAIL_ALREADY_REGISTERED": "该邮箱已被注册。",
+    "VALIDATION_FAILED": "请检查标出的字段。",
+    "INSUFFICIENT_POSITION": "你持有的 {symbol} 不足以卖出该数量。",
+    "INSTRUMENT_NOT_FOUND": "未找到该股票。",
+    "TRANSACTION_NOT_FOUND": "未找到该交易。",
+    "TRANSACTION_IN_FUTURE": "日期不能晚于今天。",
+    "INVALID_TRANSACTION": "交易数据无效。",
+    "INVALID_INTERVAL": "不支持该图表周期。",
+    "UNAUTHORIZED": "请重新登录。",
+    "RATE_LIMITED": "请求过于频繁，请稍后再试。",
+    "LLM_NOT_CONFIGURED": "服务器尚未配置 AI 分析师。",
+    "LLM_UNAVAILABLE": "AI 服务暂时不可用。",
+    "TOO_MANY_TOOL_CALLS": "问题过于复杂，请尝试缩小范围。",
+    "INVALID_CHAT_REQUEST": "请输入问题。",
+    "AUTH_NOT_CONFIGURED": "服务器尚未配置登录功能。",
+    "BAD_REQUEST": "请求无效。",
+    "NETWORK": "网络错误，请检查连接。",
+    "INTERNAL_ERROR": "出错了，请重试。",
+    "UNKNOWN": "发生未知错误。"
+  }
+}

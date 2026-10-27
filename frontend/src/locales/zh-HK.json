@@ -1,0 +1,178 @@
+{
+  "app": {
+    "name": "CyberStock Pulse",
+    "tagline": "實時多市場投資終端",
+    "simulated": "模擬數據",
+    "skipToContent": "跳至主要內容",
+    "delayedYahoo": "報價來自 Yahoo Finance，可能有延遲（港股約 15 分鐘）",
+    "tapToSkip": "輕按跳過"
+  },
+  "lang": {
+    "zh-HK": "繁體中文（香港）",
+    "zh-TW": "繁體中文（台灣）",
+    "zh-CN": "简体中文",
+    "en-US": "English"
+  },
+  "nav": {
+    "main": "主要導覽",
+    "dashboard": "主頁",
+    "news": "新聞",
+    "portfolio": "投資組合",
+    "ai": "AI 分析師",
+    "settings": "設定"
+  },
+  "common": {
+    "loading": "載入中…",
+    "retry": "重試",
+    "cancel": "取消",
+    "save": "儲存",
+    "delete": "刪除",
+    "close": "關閉",
+    "search": "搜尋",
+    "searchPlaceholder": "搜尋股票代號或公司",
+    "noResults": "沒有結果",
+    "signIn": "登入",
+    "signOut": "登出",
+    "signUp": "建立帳戶",
+    "viewAll": "查看全部",
+    "back": "返回"
+  },
+  "market": {
+    "price": "現價",
+    "change": "升跌",
+    "changePercent": "升跌幅",
+    "volume": "成交量",
+    "open": "開市",
+    "high": "最高",
+    "low": "最低",
+    "prevClose": "前收市",
+    "watchlist": "自選股",
+    "hotStocks": "熱門股票",
+    "addToWatchlist": "加入自選股",
+    "removeFromWatchlist": "從自選股移除",
+    "emptyWatchlist": "自選股清單是空的，請搜尋股票並加入。",
+    "marketStatus": "市場狀態",
+    "session": {
+      "PRE_MARKET": "開市前時段",
+      "REGULAR": "交易中",
+      "LUNCH_BREAK": "午市休市",
+      "POST_MARKET": "收市後時段",
+      "CLOSED": "已收市"
+    }
+  },
+  "stream": {
+    "connected": "實時",
+    "connecting": "連線中",
+    "reconnecting": "重新連線中",
+    "offline": "離線"
+  },
+  "chart": {
+    "title": "股價走勢",
+    "interval": "週期"
+  },
+  "news": {
+    "title": "即時財經快訊",
+    "breaking": "突發",
+    "empty": "暫時未有新聞。",
+    "readMore": "閱讀原文",
+    "aiSummary": "AI 摘要",
+    "sentiment": {
+      "BULLISH": "利好",
+      "BEARISH": "利淡",
+      "NEUTRAL": "中性",
+      "UNANALYZED": "未分析"
+    }
+  },
+  "portfolio": {
+    "title": "投資組合",
+    "positions": "持倉",
+    "transactions": "交易紀錄",
+    "addTransaction": "新增交易",
+    "symbol": "股票代號",
+    "side": "類型",
+    "quantity": "股數",
+    "price": "價格",
+    "fee": "手續費",
+    "executedAt": "日期",
+    "avgCost": "平均成本",
+    "costBasis": "總成本",
+    "marketValue": "市值",
+    "unrealized": "未實現盈虧",
+    "realized": "已實現盈虧",
+    "dividends": "股息",
+    "summary": "總覽（{currency}）",
+    "empty": "暫時未有交易紀錄。",
+    "signInRequired": "登入後即可在不同裝置同步你的投資組合。",
+    "confirmDelete": "確定刪除這筆交易？",
+    "sides": {
+      "BUY": "買入",
+      "SELL": "沽出",
+      "DIVIDEND": "派息"
+    }
+  },
+  "ai": {
+    "title": "AI 分析師",
+    "intro": "查詢報價、走勢、新聞或你的投資組合。由 DeepSeek 提供支援。",
+    "placeholder": "例如：輝達今個星期表現如何？",
+    "send": "發送",
+    "stop": "停止",
+    "thinking": "分析中…",
+    "usingTool": "正在查詢：{tool}",
+    "signInRequired": "請先登入以使用 AI 分析師。",
+    "disclaimer": "AI 內容僅供參考，並不構成任何投資建議。",
+    "tools": {
+      "get_quote": "實時報價",
+      "get_candles": "歷史股價",
+      "get_instrument": "公司資料",
+      "get_portfolio": "你的投資組合",
+      "search_news": "最新新聞"
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "language": "語言",
+    "colorScheme": "升跌顏色",
+    "colorSchemes": {
+      "GREEN_UP": "綠升紅跌",
+      "RED_UP": "紅升綠跌"
+    },
+    "highContrast": "戶外高對比模式",
+    "highContrastHint": "移除發光及透明效果，方便在強光下閱讀。",
+    "haptics": "震動回饋",
+    "account": "帳戶",
+    "about": "關於",
+    "version": "版本 {version}"
+  },
+  "auth": {
+    "email": "電郵",
+    "password": "密碼",
+    "passwordHint": "最少 8 個字元",
+    "displayName": "顯示名稱",
+    "loginTitle": "登入",
+    "registerTitle": "建立帳戶",
+    "noAccount": "未有帳戶？",
+    "haveAccount": "已有帳戶？"
+  },
+  "errors": {
+    "INVALID_CREDENTIALS": "電郵或密碼不正確。",
+    "EMAIL_ALREADY_REGISTERED": "此電郵已被註冊。",
+    "VALIDATION_FAILED": "請檢查已標示的欄位。",
+    "INSUFFICIENT_POSITION": "你持有的 {symbol} 不足以沽出此數量。",
+    "INSTRUMENT_NOT_FOUND": "找不到此股票。",
+    "TRANSACTION_NOT_FOUND": "找不到此交易。",
+    "TRANSACTION_IN_FUTURE": "日期不可以是將來。",
+    "INVALID_TRANSACTION": "交易資料無效。",
+    "INVALID_INTERVAL": "不支援此圖表週期。",
+    "UNAUTHORIZED": "請重新登入。",
+    "RATE_LIMITED": "請求過於頻密，請稍後再試。",
+    "LLM_NOT_CONFIGURED": "伺服器尚未設定 AI 分析師。",
+    "LLM_UNAVAILABLE": "AI 服務暫時未能使用。",
+    "TOO_MANY_TOOL_CALLS": "問題過於複雜，請嘗試收窄範圍。",
+    "INVALID_CHAT_REQUEST": "請輸入問題。",
+    "AUTH_NOT_CONFIGURED": "伺服器尚未設定登入功能。",
+    "BAD_REQUEST": "請求無效。",
+    "NETWORK": "網絡錯誤，請檢查連線。",
+    "INTERNAL_ERROR": "發生錯誤，請再試一次。",
+    "UNKNOWN": "發生未預期的錯誤。"
+  }
+}

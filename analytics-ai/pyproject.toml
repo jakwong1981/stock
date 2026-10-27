@@ -1,0 +1,48 @@
+[project]
+name = "cyberstock-analytics-ai"
+version = "0.1.0"
+description = "CyberStock Pulse: news ingestion, DeepSeek sentiment/summaries, AI research assistant and MCP server"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.162.0",
+    "uvicorn[standard]==0.54.0",
+    "pydantic==2.14.1",
+    "pydantic-settings==2.16.1",
+    "openai==3.39.0",
+    "httpx==0.28.1",
+    "opencc-python-reimplemented==0.1.7",
+    "redis==8.1.0",
+    "psycopg[binary]==3.3.6",
+    "mcp==2.3.0",
+    "PyJWT==2.15.1",
+    "defusedxml==0.7.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.1",
+    "ruff==0.17.3",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S"]
+ignore = ["S101", "B008"]  # assert in tests; FastAPI's Depends()/Header() defaults are idiomatic
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S105", "S106"]  # dummy secrets in tests

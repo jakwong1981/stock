@@ -1,0 +1,18 @@
+# Add this block to the shared Caddyfile at ~/github/hobbyland/Caddyfile, then reload:
+#   docker exec hobbyland-caddy-1 caddy reload --config /etc/caddy/Caddyfile
+#
+# Caddy gets a Let's Encrypt certificate automatically (the DNS record must point at this
+# host first) and redirects http:// → https://. cyberstock-web serves its own self-signed
+# TLS on 60003 and is reached over the external `shared-proxy` docker network.
+
+stock.jackstudio.app {
+	reverse_proxy https://cyberstock-web:60003 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+		# WebSocket (/ws/quotes) and SSE (/ai/news/stream, /ai/chat): no response buffering
+		flush_interval -1
+	}
+	# No `encode` here: nginx already gzips static assets, and compressing SSE responses
+	# can delay events. (Other hobbyland sites keep `encode zstd gzip`.)
+}

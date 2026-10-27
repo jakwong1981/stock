@@ -1,0 +1,345 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+ * Cyberpunk design tokens (AGENT.MD §2.1)
+ * Neon colours are used for borders/glow accents. Numbers and body text use
+ * high-contrast solid colours (WCAG AA ≥ 4.5:1 on the dark base) – §4.4.
+ * ------------------------------------------------------------------------- */
+@theme {
+  --color-void: #050508;
+  --color-night: #0a0b10;
+  --color-panel: #10121a;
+  --color-line: #1f2333;
+  --color-neon-cyan: #00f0ff;
+  --color-neon-purple: #bd00ff;
+  --color-neon-yellow: #f3e600;
+  --color-ink: #e8ecf5;        /* primary text, ~16:1 on night */
+  --color-ink-dim: #a3abc2;    /* secondary text, ~8:1 on night */
+  --color-up: #22f59a;         /* cyber-green */
+  --color-down: #ff3b6b;       /* cyber-red */
+  --color-flat: #a3abc2;
+
+  --font-sans: 'Inter', 'Noto Sans TC', 'Noto Sans SC', 'PingFang TC', 'PingFang SC', 'Microsoft JhengHei',
+    'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+
+  --shadow-glow-cyan: 0 0 0 1px rgb(0 240 255 / 0.35), 0 0 18px rgb(0 240 255 / 0.18);
+  --shadow-glow-purple: 0 0 0 1px rgb(189 0 255 / 0.4), 0 0 18px rgb(189 0 255 / 0.2);
+  --shadow-glow-yellow: 0 0 0 1px rgb(243 230 0 / 0.45), 0 0 18px rgb(243 230 0 / 0.18);
+
+  --animate-flash-up: flash-up 600ms ease-out;
+  --animate-flash-down: flash-down 600ms ease-out;
+  --animate-marquee: marquee var(--marquee-duration, 60s) linear infinite;
+
+  @keyframes flash-up {
+    0% { background-color: rgb(34 245 154 / 0.35); }
+    100% { background-color: transparent; }
+  }
+  @keyframes flash-down {
+    0% { background-color: rgb(255 59 107 / 0.35); }
+    100% { background-color: transparent; }
+  }
+  @keyframes marquee {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-50%, 0, 0); }
+  }
+}
+
+/* Locale-specific font priority: Simplified Chinese prefers SC glyphs */
+:lang(zh-CN) { font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+
+html, body, #app { height: 100%; }
+
+body {
+  margin: 0;
+  background-color: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* Animated cyber grid background */
+.cyber-grid {
+  background-color: var(--color-void);
+  background-image:
+    linear-gradient(rgb(0 240 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 240 255 / 0.05) 1px, transparent 1px),
+    radial-gradient(ellipse at top, rgb(189 0 255 / 0.12), transparent 60%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+}
+
+/* Prices: tabular digits so columns don't jitter while ticking */
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+.glass {
+  background: rgb(16 18 26 / 0.72);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--color-line);
+}
+
+/* Safe-area helpers for notched devices (iOS / Android cut-outs) */
+.pt-safe { padding-top: env(safe-area-inset-top); }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+.pl-safe { padding-left: env(safe-area-inset-left); }
+.pr-safe { padding-right: env(safe-area-inset-right); }
+
+/* Outdoor / high-contrast mode: remove glow & translucency, maximise legibility */
+.high-contrast .glass { background: #000; backdrop-filter: none; border-color: #fff; }
+.high-contrast { --color-ink-dim: #e8ecf5; --color-up: #3dff9e; --color-down: #ff5c82; }
+.high-contrast [class*='shadow-glow'] { box-shadow: none !important; }
+
+/* Visible keyboard focus everywhere */
+:focus-visible { outline: 2px solid var(--color-neon-yellow); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+.sr-only-focusable:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* ===========================================================================
+ * Gradients, depth & 3D (v0.2)
+ * Only transform/opacity are animated so effects stay GPU-composited on phones.
+ * Text and numbers remain solid colours for legibility (AGENT.MD §4.4).
+ * ========================================================================= */
+
+/* ---- Animated gradient text (brand, headings) ---- */
+.text-gradient {
+  background: linear-gradient(90deg, var(--color-neon-cyan), var(--color-neon-purple), var(--color-neon-yellow),
+    var(--color-neon-cyan));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 8s linear infinite;
+}
+@keyframes gradient-pan {
+  to { background-position: 300% 0; }
+}
+
+/* ---- Glass panel with gradient neon border + soft top highlight ---- */
+.glass-gradient {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.045), transparent 40%),
+    linear-gradient(135deg, rgb(0 240 255 / 0.07), rgb(16 18 26 / 0.9) 30%, rgb(16 18 26 / 0.9) 70%,
+      rgb(189 0 255 / 0.08));
+  border-color: transparent;
+  box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.8), inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+.glass-gradient::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgb(0 240 255 / 0.75), rgb(0 240 255 / 0.05) 35%, rgb(189 0 255 / 0.05) 65%,
+    rgb(189 0 255 / 0.8));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+/* ---- Gradient primary button ---- */
+.btn-gradient {
+  background: linear-gradient(120deg, rgb(0 240 255 / 0.22), rgb(189 0 255 / 0.22));
+  border: 1px solid rgb(0 240 255 / 0.7);
+  box-shadow: 0 0 0 1px rgb(189 0 255 / 0.25), 0 8px 24px -8px rgb(0 240 255 / 0.55);
+}
+.btn-gradient:hover { background: linear-gradient(120deg, rgb(0 240 255 / 0.32), rgb(189 0 255 / 0.32)); }
+.btn-gradient:active { transform: translateY(1px) scale(0.98); }
+
+/* ---- Animated gradient hairline (header / ticker tape) ---- */
+.gradient-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-neon-cyan), var(--color-neon-purple),
+    var(--color-neon-yellow), transparent);
+  background-size: 200% 100%;
+  animation: gradient-pan 6s linear infinite;
+}
+
+/* ---- 3D tilt (see directives/tilt.ts) ---- */
+[data-tilt] {
+  transform-style: preserve-3d;
+  transition: transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+[data-tilt].tilting { transition: transform 80ms linear; }
+/* Moving light reflection that follows the pointer */
+[data-tilt]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 0%), rgb(255 255 255 / 0.09), transparent 45%);
+  opacity: 0;
+  transition: opacity 300ms;
+}
+[data-tilt].tilting::after { opacity: 1; }
+/* Content lifted towards the viewer inside tilted cards */
+.depth-1 { transform: translateZ(18px); }
+.depth-2 { transform: translateZ(36px); }
+
+/* ---- Backdrop: aurora + perspective grid floor + floating wireframe cubes ---- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% -10%, rgb(189 0 255 / 0.18), transparent 55%), var(--color-void);
+}
+.aurora {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  opacity: 0.55;
+  will-change: transform;
+}
+.aurora-1 {
+  top: -30vmax; left: -20vmax;
+  background: radial-gradient(circle, rgb(0 240 255 / 0.22), transparent 62%);
+  animation: aurora-a 22s ease-in-out infinite alternate;
+}
+.aurora-2 {
+  top: -15vmax; right: -25vmax;
+  background: radial-gradient(circle, rgb(189 0 255 / 0.26), transparent 62%);
+  animation: aurora-b 28s ease-in-out infinite alternate;
+}
+.aurora-3 {
+  bottom: -40vmax; left: 20vmax;
+  background: radial-gradient(circle, rgb(243 230 0 / 0.08), transparent 60%);
+  animation: aurora-a 34s ease-in-out infinite alternate-reverse;
+}
+@keyframes aurora-a {
+  to { transform: translate3d(18vmax, 10vmax, 0) scale(1.15); }
+}
+@keyframes aurora-b {
+  to { transform: translate3d(-16vmax, 14vmax, 0) scale(0.9); }
+}
+
+.grid-floor {
+  position: absolute;
+  inset: auto -50% 0 -50%;
+  height: 55vh;
+  perspective: 420px;
+  perspective-origin: 50% 0%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 45%);
+  mask-image: linear-gradient(to bottom, transparent, #000 45%);
+}
+.grid-floor-plane {
+  position: absolute;
+  inset: -100% 0 0 0;
+  transform: rotateX(68deg);
+  transform-origin: 50% 100%;
+  background-image:
+    linear-gradient(rgb(0 240 255 / 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(189 0 255 / 0.3) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: grid-scroll 3.2s linear infinite;
+  will-change: transform;
+}
+@keyframes grid-scroll {
+  from { transform: rotateX(68deg) translate3d(0, 0, 0); }
+  to { transform: rotateX(68deg) translate3d(0, 56px, 0); }
+}
+/* Horizon glow where the floor meets the sky */
+.grid-horizon {
+  position: absolute;
+  left: 0; right: 0; bottom: 55vh;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgb(0 240 255 / 0.6), rgb(189 0 255 / 0.6), transparent);
+  box-shadow: 0 0 24px 6px rgb(189 0 255 / 0.25);
+  opacity: 0.6;
+}
+
+/* Pure-CSS 3D wireframe cube: <div class="cube3d"><i/>×6</div> */
+.cube-wrap {
+  position: absolute;
+  perspective: 700px;
+  animation: float-y 9s ease-in-out infinite alternate;
+}
+.cube3d {
+  --s: 64px;
+  position: relative;
+  width: var(--s);
+  height: var(--s);
+  transform-style: preserve-3d;
+  animation: cube-spin 18s linear infinite;
+}
+.cube3d > i {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgb(0 240 255 / 0.55);
+  background: linear-gradient(135deg, rgb(0 240 255 / 0.07), rgb(189 0 255 / 0.1));
+  box-shadow: inset 0 0 18px rgb(189 0 255 / 0.25);
+}
+.cube3d > i:nth-child(1) { transform: rotateY(0deg) translateZ(calc(var(--s) / 2)); }
+.cube3d > i:nth-child(2) { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); }
+.cube3d > i:nth-child(3) { transform: rotateY(180deg) translateZ(calc(var(--s) / 2)); }
+.cube3d > i:nth-child(4) { transform: rotateY(-90deg) translateZ(calc(var(--s) / 2)); }
+.cube3d > i:nth-child(5) { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); }
+.cube3d > i:nth-child(6) { transform: rotateX(-90deg) translateZ(calc(var(--s) / 2)); }
+@keyframes cube-spin {
+  from { transform: rotateX(-22deg) rotateY(0deg); }
+  to { transform: rotateX(-22deg) rotateY(360deg); }
+}
+@keyframes float-y {
+  to { transform: translate3d(0, -28px, 0); }
+}
+
+/* ---- Accessibility & outdoor mode: switch every decorative effect off ---- */
+@media (prefers-reduced-motion: reduce) {
+  .backdrop *, .text-gradient, .gradient-line { animation: none !important; }
+  [data-tilt] { transform: none !important; }
+}
+.high-contrast .backdrop { display: none; }
+.high-contrast .text-gradient { background: none; color: var(--color-neon-cyan); animation: none; }
+.high-contrast .glass-gradient { background: #000; box-shadow: none; }
+.high-contrast .glass-gradient::before { background: #fff; }
+.high-contrast [data-tilt] { transform: none !important; }
+.high-contrast [data-tilt]::after { display: none; }
+
+/* ---- Shell details ---- */
+.logo-cube { display: inline-flex; width: 24px; height: 24px; align-items: center; justify-content: center; }
+.logo-cube .cube3d > i { border-color: rgb(0 240 255 / 0.9); box-shadow: inset 0 0 8px rgb(189 0 255 / 0.6); }
+
+.nav-active {
+  background: linear-gradient(120deg, rgb(0 240 255 / 0.18), rgb(189 0 255 / 0.18));
+  box-shadow: inset 0 0 0 1px rgb(0 240 255 / 0.35), 0 6px 18px -8px rgb(189 0 255 / 0.7);
+}
+
+/* Bottom tab bar: glowing gradient indicator + icon pops up in 3D */
+.tab-icon { transition: transform 250ms cubic-bezier(0.2, 1.4, 0.4, 1); }
+.tab-active .tab-icon { transform: translateY(-2px) scale(1.12); filter: drop-shadow(0 0 6px rgb(0 240 255 / 0.7)); }
+.tab-active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 25%; right: 25%;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-neon-cyan), var(--color-neon-purple));
+  box-shadow: 0 0 10px var(--color-neon-cyan);
+}
+
+/* ---- Page transition (RouterView) ---- */
+.page-enter-active, .page-leave-active {
+  transition: opacity 260ms ease, transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-origin: 50% 0%;
+}
+.page-enter-from { opacity: 0; transform: perspective(1200px) rotateX(-6deg) translate3d(0, 18px, 0); }
+.page-leave-to { opacity: 0; transform: perspective(1200px) rotateX(4deg) translate3d(0, -10px, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter-from, .page-leave-to { transform: none; }
+  .logo-cube .cube3d { animation: none !important; }
+}
+.high-contrast .page-enter-from, .high-contrast .page-leave-to { transform: none; }

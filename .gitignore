@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+
+# Environment and secrets (encryption key must never be committed)
+.env.keys
+*.pem
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Backend
+backend/target/
+*.class
+*.jar
+*.log
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.turbo/
+frontend/ios/
+frontend/android/
+
+# Python / AI service
+analytics-ai/.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Docker (local builds)
+*.tar
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Screenshots
+/tmp/cs-*.png

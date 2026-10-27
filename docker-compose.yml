@@ -1,0 +1,116 @@
+# CyberStock Pulse — full stack.
+#
+# Secrets come from the dotenvx-encrypted `.env`, decrypted in memory at launch:
+#   ./scripts/deploy.sh up            (wraps: dotenvx run -- docker compose --env-file /dev/null up -d)
+# Only the `web` service publishes a port; databases and internal services stay on private networks.
+
+name: cyberstock
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:2.31.0-pg17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cyberstock}
+      POSTGRES_USER: ${POSTGRES_USER:-cyberstock}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      TIMESCALEDB_TELEMETRY: "off"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:8.8.4-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redisdata:/data
+    networks: [data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: ./backend
+    image: cyberstock/backend:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      timescaledb: { condition: service_healthy }
+    environment:
+      DATABASE_URL: jdbc:postgresql://timescaledb:5432/${POSTGRES_DB:-cyberstock}
+      POSTGRES_USER: ${POSTGRES_USER:-cyberstock}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required (openssl rand -base64 48)}
+      JWT_TTL_MINUTES: ${JWT_TTL_MINUTES:-120}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-https://localhost:60003,https://stock.jackstudio.app,capacitor://localhost,https://localhost}
+      MARKET_DATA_PROVIDER: ${MARKET_DATA_PROVIDER:-yahoo}
+      YAHOO_POLL_SECONDS: ${YAHOO_POLL_SECONDS:-15}
+      FINNHUB_POLL_SECONDS: ${FINNHUB_POLL_SECONDS:-15}
+      FINNHUB_API_KEY: ${FINNHUB_API_KEY:-}
+    networks: [data, app]
+
+  analytics-ai:
+    build: ./analytics-ai
+    image: cyberstock/analytics-ai:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      backend: { condition: service_healthy } # backend runs the Flyway migrations
+      redis: { condition: service_healthy }
+    environment:
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+      DEEPSEEK_MODEL_FAST: ${DEEPSEEK_MODEL_FAST:-deepseek-chat}
+      DEEPSEEK_MODEL_CHAT: ${DEEPSEEK_MODEL_CHAT:-deepseek-chat}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30}
+      LLM_MAX_RETRIES: ${LLM_MAX_RETRIES:-2}
+      LLM_FALLBACK_BASE_URL: ${LLM_FALLBACK_BASE_URL:-}
+      LLM_FALLBACK_API_KEY: ${LLM_FALLBACK_API_KEY:-}
+      LLM_FALLBACK_MODEL: ${LLM_FALLBACK_MODEL:-}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      BACKEND_URL: http://backend:8080
+      # libpq reads credentials from PGUSER/PGPASSWORD so the password never appears in a DSN
+      DATABASE_URL: host=timescaledb port=5432 dbname=${POSTGRES_DB:-cyberstock}
+      PGUSER: ${POSTGRES_USER:-cyberstock}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      REDIS_URL: redis://redis:6379/0
+      NEWS_PROVIDER: ${NEWS_PROVIDER:-yahoo}
+      NEWS_POLL_SECONDS: ${NEWS_POLL_SECONDS:-60}
+      FINNHUB_API_KEY: ${FINNHUB_API_KEY:-}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-https://localhost:60003,https://stock.jackstudio.app,capacitor://localhost,https://localhost}
+    networks: [data, app]
+
+  web:
+    build: ./frontend
+    image: cyberstock/web:${IMAGE_TAG:-latest}
+    # Fixed name: the shared Caddy (~/github/hobbyland) proxies stock.jackstudio.app → cyberstock-web:60003
+    container_name: cyberstock-web
+    restart: unless-stopped
+    depends_on:
+      backend: { condition: service_healthy }
+      analytics-ai: { condition: service_healthy }
+    ports:
+      # HTTPS only (self-signed). Public 80/443 stay owned by hobbyland's Caddy.
+      - "${WEB_PORT:-60003}:60003"
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+    networks: [app, shared-proxy]
+
+networks:
+  data:
+    internal: true # database & Redis: no internet access; reachable only by backend / analytics-ai
+  app: {}
+  shared-proxy:
+    # Shared with hobbyland's Caddy; created once on the host: docker network create shared-proxy
+    external: true
+    name: ${EXTERNAL_PROXY_NET:-shared-proxy}
+
+volumes:
+  pgdata:
+  redisdata:

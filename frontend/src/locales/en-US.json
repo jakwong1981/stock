@@ -1,0 +1,178 @@
+{
+  "app": {
+    "name": "CyberStock Pulse",
+    "tagline": "Real-time multi-market terminal",
+    "simulated": "Simulated data",
+    "skipToContent": "Skip to content",
+    "delayedYahoo": "Prices from Yahoo Finance, may be delayed (HK about 15 min)",
+    "tapToSkip": "Tap to skip"
+  },
+  "lang": {
+    "zh-HK": "繁體中文（香港）",
+    "zh-TW": "繁體中文（台灣）",
+    "zh-CN": "简体中文",
+    "en-US": "English"
+  },
+  "nav": {
+    "main": "Main navigation",
+    "dashboard": "Dashboard",
+    "news": "News",
+    "portfolio": "Portfolio",
+    "ai": "AI Analyst",
+    "settings": "Settings"
+  },
+  "common": {
+    "loading": "Loading…",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "close": "Close",
+    "search": "Search",
+    "searchPlaceholder": "Search symbol or company",
+    "noResults": "No results",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signUp": "Create account",
+    "viewAll": "View all",
+    "back": "Back"
+  },
+  "market": {
+    "price": "Price",
+    "change": "Change",
+    "changePercent": "Change %",
+    "volume": "Volume",
+    "open": "Open",
+    "high": "High",
+    "low": "Low",
+    "prevClose": "Prev close",
+    "watchlist": "Watchlist",
+    "hotStocks": "Hot stocks",
+    "addToWatchlist": "Add to watchlist",
+    "removeFromWatchlist": "Remove from watchlist",
+    "emptyWatchlist": "Your watchlist is empty. Search for a stock to add it.",
+    "marketStatus": "Market status",
+    "session": {
+      "PRE_MARKET": "Pre-market",
+      "REGULAR": "Open",
+      "LUNCH_BREAK": "Lunch break",
+      "POST_MARKET": "After hours",
+      "CLOSED": "Closed"
+    }
+  },
+  "stream": {
+    "connected": "Live",
+    "connecting": "Connecting",
+    "reconnecting": "Reconnecting",
+    "offline": "Offline"
+  },
+  "chart": {
+    "title": "Price chart",
+    "interval": "Interval"
+  },
+  "news": {
+    "title": "Breaking news",
+    "breaking": "Breaking",
+    "empty": "No news yet.",
+    "readMore": "Read source",
+    "aiSummary": "AI summary",
+    "sentiment": {
+      "BULLISH": "Bullish",
+      "BEARISH": "Bearish",
+      "NEUTRAL": "Neutral",
+      "UNANALYZED": "Not analysed"
+    }
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "positions": "Positions",
+    "transactions": "Transactions",
+    "addTransaction": "Add transaction",
+    "symbol": "Symbol",
+    "side": "Type",
+    "quantity": "Quantity",
+    "price": "Price",
+    "fee": "Fees",
+    "executedAt": "Date",
+    "avgCost": "Avg cost",
+    "costBasis": "Cost basis",
+    "marketValue": "Market value",
+    "unrealized": "Unrealised P&L",
+    "realized": "Realised P&L",
+    "dividends": "Dividends",
+    "summary": "Summary ({currency})",
+    "empty": "No transactions yet.",
+    "signInRequired": "Sign in to track your portfolio across devices.",
+    "confirmDelete": "Delete this transaction?",
+    "sides": {
+      "BUY": "Buy",
+      "SELL": "Sell",
+      "DIVIDEND": "Dividend"
+    }
+  },
+  "ai": {
+    "title": "AI Analyst",
+    "intro": "Ask about quotes, charts, news or your portfolio. Powered by DeepSeek.",
+    "placeholder": "e.g. How has NVDA moved this week?",
+    "send": "Send",
+    "stop": "Stop",
+    "thinking": "Analysing…",
+    "usingTool": "Looking up: {tool}",
+    "signInRequired": "Sign in to use the AI analyst.",
+    "disclaimer": "AI output is for information only and is not investment advice.",
+    "tools": {
+      "get_quote": "live quotes",
+      "get_candles": "price history",
+      "get_instrument": "company profile",
+      "get_portfolio": "your portfolio",
+      "search_news": "recent news"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "colorScheme": "Price colours",
+    "colorSchemes": {
+      "GREEN_UP": "Green up / red down",
+      "RED_UP": "Red up / green down"
+    },
+    "highContrast": "Outdoor high-contrast mode",
+    "highContrastHint": "Removes glow and transparency for bright sunlight.",
+    "haptics": "Haptic feedback",
+    "account": "Account",
+    "about": "About",
+    "version": "Version {version}"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters",
+    "displayName": "Display name",
+    "loginTitle": "Sign in",
+    "registerTitle": "Create account",
+    "noAccount": "No account yet?",
+    "haveAccount": "Already have an account?"
+  },
+  "errors": {
+    "INVALID_CREDENTIALS": "Incorrect email or password.",
+    "EMAIL_ALREADY_REGISTERED": "This email is already registered.",
+    "VALIDATION_FAILED": "Please check the highlighted fields.",
+    "INSUFFICIENT_POSITION": "You don't hold enough {symbol} to sell that quantity.",
+    "INSTRUMENT_NOT_FOUND": "Symbol not found.",
+    "TRANSACTION_NOT_FOUND": "Transaction not found.",
+    "TRANSACTION_IN_FUTURE": "The date cannot be in the future.",
+    "INVALID_TRANSACTION": "Invalid transaction values.",
+    "INVALID_INTERVAL": "Unsupported chart interval.",
+    "UNAUTHORIZED": "Please sign in again.",
+    "RATE_LIMITED": "Too many requests. Please wait a moment.",
+    "LLM_NOT_CONFIGURED": "The AI analyst is not configured on this server.",
+    "LLM_UNAVAILABLE": "The AI service is temporarily unavailable.",
+    "TOO_MANY_TOOL_CALLS": "The question was too complex. Try narrowing it down.",
+    "INVALID_CHAT_REQUEST": "Please enter a question.",
+    "AUTH_NOT_CONFIGURED": "Sign-in is not configured on this server.",
+    "BAD_REQUEST": "The request was invalid.",
+    "NETWORK": "Network error. Check your connection.",
+    "INTERNAL_ERROR": "Something went wrong. Please try again.",
+    "UNKNOWN": "Unexpected error."
+  }
+}
